@@ -4,6 +4,37 @@ document.addEventListener('DOMContentLoaded', function () {
     let transactions = [];
     let loans = [];
 
+    // Cargar datos desde localStorage
+    function loadData() {
+        const savedTransactions = localStorage.getItem('transactions');
+        const savedLoans = localStorage.getItem('loans');
+        if (savedTransactions) {
+            transactions = JSON.parse(savedTransactions);
+            transactions.forEach(transaction => addTransactionToList(transaction));
+        }
+        if (savedLoans) {
+            loans = JSON.parse(savedLoans);
+            renderLoans();
+        }
+        // Recalcular los totales
+        transactions.forEach(transaction => {
+            if (transaction.type === 'income') {
+                if (transaction.bank === 'A') {
+                    bankATotal += transaction.amount;
+                } else {
+                    bankBTotal += transaction.amount;
+                }
+            } else {
+                if (transaction.bank === 'A') {
+                    bankATotal -= transaction.amount;
+                } else {
+                    bankBTotal -= transaction.amount;
+                }
+            }
+        });
+        updateTotal();
+    }
+
     function updateTotal() {
         const total = bankATotal + bankBTotal;
         document.getElementById('bankATotal').textContent = bankATotal.toFixed(2);
@@ -24,10 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         const transaction = { description, amount, bank, type, date };
         transactions.push(transaction);
-        const li = document.createElement('li');
-        li.textContent = `${description} - $${amount.toFixed(2)} - ${date}`;
-        li.classList.add(type === 'income' ? 'income' : 'expense');
-        document.getElementById('transactionsList').appendChild(li);
+        addTransactionToList(transaction);
         if (type === 'income') {
             if (bank === 'A') {
                 bankATotal += amount;
@@ -42,9 +70,17 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
         updateTotal();
-        // Limpia los campos
+        // Guardar datos en localStorage
+        localStorage.setItem('transactions', JSON.stringify(transactions));
         document.getElementById('description').value = '';
         document.getElementById('amount').value = '';
+    }
+
+    function addTransactionToList(transaction) {
+        const li = document.createElement('li');
+        li.textContent = `${transaction.description} - $${transaction.amount.toFixed(2)} - ${transaction.date}`;
+        li.classList.add(transaction.type === 'income' ? 'income' : 'expense');
+        document.getElementById('transactionsList').appendChild(li);
     }
 
     function addLoan(name, amount) {
@@ -52,6 +88,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const loan = { name, amount, date };
         loans.push(loan);
         renderLoans();
+        // Guardar datos en localStorage
+        localStorage.setItem('loans', JSON.stringify(loans));
         document.getElementById('loanName').value = '';
         document.getElementById('loanAmount').value = '';
     }
@@ -83,6 +121,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 loans.splice(index, 1);
             }
             renderLoans();
+            // Guardar datos en localStorage
+            localStorage.setItem('loans', JSON.stringify(loans));
         } else {
             alert('Monto inválido o mayor al saldo de la deuda');
         }
@@ -91,6 +131,8 @@ document.addEventListener('DOMContentLoaded', function () {
     window.payLoan = function (index) {
         loans.splice(index, 1);
         renderLoans();
+        // Guardar datos en localStorage
+        localStorage.setItem('loans', JSON.stringify(loans));
     };
 
     document.getElementById('addIncome').addEventListener('click', function () {
@@ -138,4 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     window.showTab = showTab;
+
+    // Cargar los datos al iniciar
+    loadData();
 });
