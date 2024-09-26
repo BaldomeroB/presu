@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicación de Presupuesto</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="tabs">
+        <button class="tab-button" onclick="openTab('presupuesto')">Presupuesto</button>
+        <button class="tab-button" onclick="openTab('prestamos')">Préstamos</button>
+    </div>
+
+    <!-- Pestaña Presupuesto -->
+    <div id="presupuesto" class="tab-content active">
+        <h2>Gestión de Presupuesto</h2>
+        <h3>Totales</h3>
+        <p>BCP: $<span id="bankATotal">0.00 </span>
+         Scotiabank: $<span id="bankBTotal">0.00 </span>
+         Total: $<span id="total">0.00 </span></p>
+        <div class="form-group">
+            <input type="text" id="description" placeholder="Descripción">
+        </div>
+        <div class="form-group">
+            <input type="number" id="amount" placeholder="Monto">
+        </div>
+        <div class="form-group">
+            <select id="bank">
+                <option value="A">BCP</option>
+                <option value="B">Scotiabank</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <button onclick="addIncome()">Agregar Ingreso</button>
+            <button onclick="addExpense()">Agregar Gasto</button>
+        </div>
+        <h3>Movimientos</h3>
+        <ul id="transactionsList"></ul>
+    </div>
+
+    <!-- Pestaña Préstamos -->
+    <div id="prestamos" class="tab-content">
+        <h2>Gestión de Préstamos</h2>
+        <div class="form-group">
+            <input type="text" id="loanName" placeholder="Nombre del préstamo">
+        </div>
+        <div class="form-group">
+            <input type="number" id="loanAmount" placeholder="Monto">
+        </div>
+        <div class="form-group">
+            <button onclick="addLoan()">Agregar Préstamo</button>
+        </div>
+        <h3>Préstamos Actuales</h3>
+        <ul id="loansList"></ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
