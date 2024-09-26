@@ -7,48 +7,54 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Aplicación de Presupuesto</h1>
-        </header>
-        <nav>
-            <div class="tabs">
-                <button class="tab active" onclick="showTab('presupuesto')">Presupuesto</button>
-                <button class="tab" onclick="showTab('prestamos')">Préstamos</button>
-            </div>
-        </nav>
-        <main>
-            <section id="presupuesto" class="tab-content active">
-                <div class="totals">
-                    <span class="total-text bankA">BCP: $<span id="bankATotal">0.00</span></span>
-                    <span class="total-text bankB">Scotiabank: $<span id="bankBTotal">0.00</span></span>
-                    <span class="total-text total">Total: $<span id="total">0.00</span></span>
-                </div>
-                <div class="form-container">
-                    <input type="text" id="description" placeholder="Descripción" aria-label="Descripción">
-                    <input type="number" id="amount" placeholder="Monto" aria-label="Monto">
-                    <select id="bank" aria-label="Banco">
-                        <option value="A">BCP</option>
-                        <option value="B">Scotiabank</option>
-                    </select>
-                    <button id="addIncome">Agregar Ingreso</button>
-                    <button id="addExpense">Agregar Gasto</button>
-                </div>
-                <ul id="transactionsList" aria-live="polite"></ul>
-            </section>
-            <section id="prestamos" class="tab-content">
-                <div class="form-container">
-                    <input type="text" id="loanName" placeholder="Nombre" aria-label="Nombre">
-                    <input type="number" id="loanAmount" placeholder="Monto" aria-label="Monto">
-                    <button id="addLoan">Agregar Préstamo</button>
-                </div>
-                <ul id="loansList" aria-live="polite"></ul>
-            </section>
-        </main>
-        <footer>
-            <!-- Opcional: Información adicional o créditos -->
-        </footer>
+    <div class="tabs">
+        <button class="tab-button" onclick="openTab('presupuesto')">Presupuesto</button>
+        <button class="tab-button" onclick="openTab('prestamos')">Préstamos</button>
     </div>
+
+    <!-- Pestaña Presupuesto -->
+    <div id="presupuesto" class="tab-content active">
+        <h2>Gestión de Presupuesto</h2>
+        <h3>Totales</h3>
+        <p>BCP: $<span id="bankATotal">0.00 </span>
+         Scotiabank: $<span id="bankBTotal">0.00 </span>
+         Total: $<span id="total">0.00 </span></p>
+        <div class="form-group">
+            <input type="text" id="description" placeholder="Descripción">
+        </div>
+        <div class="form-group">
+            <input type="number" id="amount" placeholder="Monto">
+        </div>
+        <div class="form-group">
+            <select id="bank">
+                <option value="A">BCP</option>
+                <option value="B">Scotiabank</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <button onclick="addIncome()">Agregar Ingreso</button>
+            <button onclick="addExpense()">Agregar Gasto</button>
+        </div>
+        <h3>Movimientos</h3>
+        <ul id="transactionsList"></ul>
+    </div>
+
+    <!-- Pestaña Préstamos -->
+    <div id="prestamos" class="tab-content">
+        <h2>Gestión de Préstamos</h2>
+        <div class="form-group">
+            <input type="text" id="loanName" placeholder="Nombre del préstamo">
+        </div>
+        <div class="form-group">
+            <input type="number" id="loanAmount" placeholder="Monto">
+        </div>
+        <div class="form-group">
+            <button onclick="addLoan()">Agregar Préstamo</button>
+        </div>
+        <h3>Préstamos Actuales</h3>
+        <ul id="loansList"></ul>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
