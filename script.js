@@ -11,6 +11,27 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         document.getElementById(tabName).classList.add('active');
     };
+  
+    // Cargar datos desde LocalStorage
+    function loadData() {
+        const savedTransactions = localStorage.getItem('transactions');
+        const savedLoans = localStorage.getItem('loans');
+        if (savedTransactions) {
+            transactions = JSON.parse(savedTransactions);
+            renderTransactions();
+        }
+        if (savedLoans) {
+            loans = JSON.parse(savedLoans);
+            renderLoans();
+        }
+        updateTotals();
+    }
+  
+    // Guardar transacciones y préstamos en LocalStorage
+    function saveData() {
+        localStorage.setItem('transactions', JSON.stringify(transactions));
+        localStorage.setItem('loans', JSON.stringify(loans));
+    }
 
     // Mostrar totales de bancos
     function updateTotals() {
@@ -40,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         updateTotals();
         renderTransactions();
+        saveData();  // Guardar los datos en LocalStorage
 
         document.getElementById('description').value = '';
         document.getElementById('amount').value = '';
@@ -70,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         updateTotals();
         renderTransactions();
+        saveData();  // Guardar los datos en LocalStorage
 
         document.getElementById('description').value = '';
         document.getElementById('amount').value = '';
@@ -101,6 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         loans.push({ name, amount, date, movements: [{ amount, date, type: 'add' }] });
         renderLoans();
+        saveData(); // Guardar datos en LocalStorage
 
         document.getElementById('loanName').value = '';
         document.getElementById('loanAmount').value = '';
@@ -141,6 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
             loans[index].amount += amount;
             loans[index].movements.push({ amount, date, type: 'add' });
             renderLoans();
+            saveData();  // Guardar los datos en LocalStorage
         } else {
             alert('Ingrese un monto válido');
         }
@@ -157,6 +182,7 @@ document.addEventListener('DOMContentLoaded', function () {
             loans[index].movements.push({ amount, date, type: 'reduce' });
             if (loans[index].amount === 0) loans.splice(index, 1);
             renderLoans();
+            saveData();  // Guardar los datos en LocalStorage
         } else {
             alert('Monto inválido o mayor al saldo del préstamo');
         }
@@ -166,7 +192,10 @@ document.addEventListener('DOMContentLoaded', function () {
     window.payLoan = function (index) {
         loans.splice(index, 1);
         renderLoans();
+        saveData();  // Guardar los datos en LocalStorage
     };
 
-    openTab('presupuesto');
+      
+    loadData();  // Cargar los datos al cargar la página
+    openTab('presupuesto');  // Mostrar la pestaña de presupuesto por defecto
 });
