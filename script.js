@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('bankATotal').textContent = bankATotal.toFixed(2);
         document.getElementById('bankBTotal').textContent = bankBTotal.toFixed(2);
         document.getElementById('total').textContent = total.toFixed(2);
-        saveData();  // Guardar los datos en LocalStorage
     }
 
     // Agregar Ingreso
